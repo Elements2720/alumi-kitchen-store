@@ -1,24 +1,46 @@
 import type { ProductImage } from '@/domain/catalog/entities/product';
 
+const kitchenAsset = (filename: string) => `/assets/kitchen/${filename}`;
+
 export const assetManifest = {
-  placeholder: {
-    source: 'Local generated placeholder; approved aluminum imagery not supplied.',
-    rights: 'Internal demo placeholder',
-    width: 1200,
-    height: 800,
-    desktopFocalPoint: 'center',
-    mobileFocalPoint: 'center',
+  hero: {
+    primary: kitchenAsset('hero-kitchen-01.jpg'),
+    alternate: kitchenAsset('hero-kitchen-02.jpg'),
   },
-  hero: ['/assets/cabinet-placeholder.svg', '/assets/cabinet-detail.svg'],
+  collections: {
+    modern: kitchenAsset('collection-modern.jpg'),
+    classic: kitchenAsset('collection-classic.jpg'),
+    upperCabinets: kitchenAsset('collection-upper-cabinets.jpg'),
+  },
+  products: {
+    modernKitchen: kitchenAsset('product-modern-kitchen.jpg'),
+    upperPackage: kitchenAsset('product-upper-package.jpg'),
+    baseUnit: kitchenAsset('product-base-unit.jpg'),
+    sinkUnit: kitchenAsset('product-sink-unit.jpg'),
+    lShaped: kitchenAsset('product-l-shaped.jpg'),
+  },
+  details: {
+    doorHandle: kitchenAsset('detail-door-handle.jpg'),
+    aluminumFinish: kitchenAsset('detail-aluminum-finish.jpg'),
+  },
+  lookbook: {
+    project: kitchenAsset('lookbook-project.jpg'),
+    customDesign: kitchenAsset('lookbook-custom-design.jpg'),
+  },
+  hotspot: kitchenAsset('hotspot-kitchen.jpg'),
+  blog: {
+    care: kitchenAsset('blog-care.jpg'),
+    layout: kitchenAsset('blog-layout.jpg'),
+    finishes: kitchenAsset('blog-finishes.jpg'),
+  },
 } as const;
 
-export function placeholderImage(id: string, role: ProductImage['role'] = 'gallery'): ProductImage {
-  return {
-    id,
-    src: role === 'hero' ? assetManifest.hero[0] : '/assets/cabinet-detail.svg',
-    alt: { ar: 'صورة مؤقتة — صور دواليب الألوميتال المعتمدة غير متوفرة', en: 'Placeholder — approved aluminum cabinet image pending' },
-    width: role === 'hero' ? 1200 : 800,
-    height: role === 'hero' ? 800 : 800,
-    role,
-  };
+export function productImage(
+  id: string,
+  src: string,
+  alt: ProductImage['alt'],
+  role: ProductImage['role'] = 'gallery',
+): ProductImage {
+  const squareImage = src.includes('/product-') || src.includes('/detail-');
+  return { id, src, alt, width: squareImage ? 2048 : 2528, height: squareImage ? 2048 : 1696, role };
 }
